@@ -1,6 +1,10 @@
 import requests
-from src.config import RAW_DIR 
+from pathlib import Path
 
+root = Path(__file__).resolve().parent.parent   # src/script.py -> project root
+raw_dir = root / "data" / "raw"
+
+output_file = raw_dir / "traffic_raw.csv"
 # NB: parameters and header guide found at https://ondata.github.io/guida-api-istat/
 # url and header setting
 url = "https://esploradati.istat.it/SDMXWS/rest/data/41_983"
@@ -13,8 +17,6 @@ headers = {'Accept': 'application/vnd.sdmx.data+csv;version=1.0.0'}
 # output of two years 2023-2024 is 2233124 which would be 2.13 MB
 # since the data might be manageble in its interity, we can try to export the full csv
 traffic_raw = requests.get(url, headers=headers)
-
-output_file = RAW_DIR / "traffic_raw.csv"
 
 # saving the data
 if traffic_raw.status_code == 200:
